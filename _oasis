@@ -13,4 +13,4 @@ Executable manager
   MainIs:       main.ml
   Install:      false
   ByteOpt: -thread
-  BuildDepends: lwt, lwt.extra, lwt.unix, lwt.syntax, str
+  BuildDepends: lwt, lwt.extra, lwt.unix, lwt.syntax, str, ssl, netstring
