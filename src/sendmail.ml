@@ -156,7 +156,7 @@ let sendmail msg_list =
   
   let client = new smtp_client ~hostname:"smtp.gmail.com" ~port:587 () in
   try
-    (*  client#set_debug_level 1;(* Uncomment to see protocol in action *) *)
+    client#set_debug_level 1;(* Uncomment to see protocol in action *) 
     client#ehlo ~host:(Conf.get_param "host") ();
     client#starttsl;
     client#ehlo ~host:(Conf.get_param "host") ();
@@ -181,8 +181,8 @@ let sendmail msg_list =
   with
     | SMTP_error (code, _) as e -> Printf.printf "exit with error code %d\n" code; raise e
 
-(*
+
 let _ = 
       Ssl.init();;
-*)
+
 

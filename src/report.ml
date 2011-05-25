@@ -31,7 +31,7 @@ let panic issue =
   queue {
     target_name = "Issuu admin" ; 
     target_email = Conf.get_param "email_admin" ; 
-    subject = "Issue raised from instance controller"; 
+    subject = "Message from Instance Controller"; 
     body_plain = issue ; 
     body_html = issue ;
   }

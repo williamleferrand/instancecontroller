@@ -17,3 +17,4 @@ setup.data
 setup.log
 setup.ml
 *.conf
+*private.ml
