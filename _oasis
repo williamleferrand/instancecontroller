@@ -1,0 +1,16 @@
+OASISFormat: 0.1
+Name: instancemanager
+Version: 0.0.1
+LicenseFile: COPYING
+License: PROP
+Authors: William Le Ferrand
+BuildTools: ocamlbuild
+Plugins: DevFiles (0.2), META (0.2)
+Synopsis: InstanceManager
+
+Executable manager
+  Path:         src
+  MainIs:       main.ml
+  Install:      false
+  ByteOpt: -thread
+  BuildDepends: lwt, lwt.extra, lwt.unix
