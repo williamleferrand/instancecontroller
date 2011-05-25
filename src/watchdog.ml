@@ -15,11 +15,14 @@ let rec monitor pid =
   >>= function 
     | _, (Unix.WSTOPPED s) ->
       display "process %d caught signal %d" pid s ; 
-      Ptrace.cont pid 0 ; monitor pid  
-    | _, (Unix.WEXITED s) | _, (Unix.WSIGNALED s) ->
-      display "process %d has terminated with code %d" pid s ;
+      Ptrace.cont pid s ; monitor pid  
+    | _, (Unix.WEXITED s)  ->
+      display "process %d has exited with code %d" pid s ;
       fail (ProcessHasExited s)
-  
+    | _, (Unix.WSIGNALED s) ->
+      display "process %d was killed by signal %d" pid s ;
+      fail (ProcessHasExited s)
+    
 
 (* Monitor a process ********************************************************************)
 
@@ -34,11 +37,13 @@ let attach pid =
 let launch (process, args) = 
 
   let process = Lwt_process.open_process_none (process, (Array.of_list args)) in 
-  display "Process launched with pid %d" (process#pid) ; 
-  process#status 
-  >>= fun exit_status -> 
-  display "Process has returned" ; 
-  return ()
+  let pid = process#pid in
+  display "Process launched with pid %d" pid;
+  (try
+     Ptrace.attach pid ;
+   with _ -> raise (CantAttach pid)); 
+  monitor pid
+
 
 (*
   let pid = Lwt_process2.spawn (process, Array.of_list args) None [] in 
