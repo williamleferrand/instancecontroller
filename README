@@ -1,2 +1,14 @@
-EC2 instance controler
-=====================
+EC2 instance controller
+=======================
+
+Rev1 : 05 / 25 / 2011
+
+
+
+Role 1 : 
+
+     Run and maintain alive a serie of processes
+     The controller should be able to restart without restarting the 'children'
+
+
+
