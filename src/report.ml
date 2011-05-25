@@ -27,11 +27,20 @@ let rec watch_and_send () =
 
 (* Utility functions *************************************************************)
 
-let panic issue = 
+let std issue = 
   queue {
     target_name = "Issuu admin" ; 
     target_email = Conf.get_param "email_admin" ; 
     subject = "Message from Instance Controller"; 
+    body_plain = issue ; 
+    body_html = issue ;
+  }
+
+let panic issue = 
+  queue {
+    target_name = "Issuu admin" ; 
+    target_email = Conf.get_param "email_admin" ; 
+    subject = "Panic from Instance Controller"; 
     body_plain = issue ; 
     body_html = issue ;
   }
