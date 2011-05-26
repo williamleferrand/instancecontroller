@@ -72,7 +72,8 @@ int main(int argc, char** argv) {
         }
 
         if (si.si_code & (CLD_EXITED | CLD_KILLED | CLD_DUMPED)) {
-            return si.si_status;
+          printf ("Exiting with code %d\n", si.si_status); 
+          return si.si_status;
         }
         // Fall through to exiting.
         return 1;
