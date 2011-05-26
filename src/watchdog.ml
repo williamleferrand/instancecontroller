@@ -23,7 +23,6 @@ let rec monitor pid =
       display "process %d was killed by signal %d" pid s ;
       fail (ProcessHasExited s)
     
-
 (* Monitor a process ********************************************************************)
 
 let attach pid = 
@@ -34,19 +33,25 @@ let attach pid =
   with _ -> raise (CantAttach pid)); 
   monitor pid
 
-let launch (process, args) = 
-
+let launch (service, process, args) = 
   let process = Lwt_process.open_process_none (process, (Array.of_list args)) in 
   let pid = process#pid in
   display "Process launched with pid %d" pid;
   (try
      Ptrace.attach pid ;
-   with _ -> raise (CantAttach pid)); 
-  monitor pid
+   with _ -> raise (CantAttach pid));
+  Proc.save_pid service pid 
+  >>= fun _ -> monitor pid
 
+(* Track a service **********************************************************************)
 
-(*
-  let pid = Lwt_process2.spawn (process, Array.of_list args) None [] in 
-  display "Process launched with pid %d\n" pid ; 
-  Lwt_unix.sleep infinity
-*)
+let track ((service, process, args) as target) =
+  (* first we look if the process is here *)
+  catch 
+    (fun () -> 
+      Proc.read_pid service
+      >>= attach)
+    (function
+      | Proc.NoPid _ -> (* no process, we start a fresh one *) launch target
+      | CantAttach _ -> launch target 
+      | _ as e -> fail e) 

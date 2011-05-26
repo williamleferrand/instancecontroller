@@ -44,9 +44,9 @@ let from_file file =
        (fun binary acc ->
          display "Parsing %s" binary ;
          match parse_command_line [] "" (Ulexing.from_utf8_string binary) with 
-             binary :: args as l -> 
-               display "Binary is %s, arguments are [%s]" binary (String.concat "|" args); 
-               (binary, l) :: acc
+             service :: binary :: args as l -> 
+               display "Service %s, binary is %s, arguments are [%s]" service  binary (String.concat "|" args); 
+               (service, binary, l) :: acc
            | _ -> acc)
        lines
        [] 
