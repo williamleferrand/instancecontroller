@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 05aa2c3ddff826bf2b4544bd9e9ddb49) *)
+(* DO NOT EDIT (digest: 82af4e8d2dfb7fdb28dc5af01c8ce32c) *)
 module OASISGettext = struct
 # 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/oasis/OASISGettext.ml"
   
@@ -455,17 +455,17 @@ let package_default =
      lib_c = [];
      flags =
        [
-          (["oasis_executable_basic_byte"; "ocaml"; "link"; "byte"],
+          (["oasis_executable_manager_byte"; "ocaml"; "link"; "byte"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_basic_native"; "ocaml"; "link"; "native"],
+          (["oasis_executable_manager_native"; "ocaml"; "link"; "native"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_basic_byte"; "ocaml"; "ocamldep"; "byte"],
+          (["oasis_executable_manager_byte"; "ocaml"; "ocamldep"; "byte"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_basic_native"; "ocaml"; "ocamldep"; "native"],
+          (["oasis_executable_manager_native"; "ocaml"; "ocamldep"; "native"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_basic_byte"; "ocaml"; "compile"; "byte"],
+          (["oasis_executable_manager_byte"; "ocaml"; "compile"; "byte"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_basic_native"; "ocaml"; "compile"; "native"],
+          (["oasis_executable_manager_native"; "ocaml"; "compile"; "native"],
             [(OASISExpr.EBool true, S [A "-thread"])])
        ];
      }

@@ -9,23 +9,23 @@ Plugins: DevFiles (0.2), META (0.2)
 Synopsis: InstanceManager
 
 
-#Executable manager
-#  Path:         src
-#  MainIs:       main.ml
-#  Install:      false
-#  ByteOpt: -thread
-#  NativeOpt: -thread
-#  CompiledObject: best
-#  BuildDepends: ptrace, lwt, lwt.extra, lwt.unix, lwt.syntax, str, ssl, netstring, ulex
-
-
-Executable basic
+Executable manager
   Path:         src
-  MainIs:       basic.ml
+  MainIs:       main.ml
   Install:      false
   ByteOpt: -thread
   NativeOpt: -thread
   CompiledObject: best
-  BuildDepends: ptrace
+  BuildDepends: ptrace, lwt, lwt.extra, lwt.unix, lwt.syntax, str, ssl, netstring, ulex
+
+
+#Executable basic
+#  Path:         src
+#  MainIs:       basic.ml
+#  Install:      false
+#  ByteOpt: -thread
+#  NativeOpt: -thread
+#  CompiledObject: best
+#  BuildDepends: ptrace
 
           
