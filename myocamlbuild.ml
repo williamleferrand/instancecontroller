@@ -1,7 +1,7 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 6f932a3674d7a29590fb1846b257a805) *)
+(* DO NOT EDIT (digest: 05aa2c3ddff826bf2b4544bd9e9ddb49) *)
 module OASISGettext = struct
-# 21 "/home/ubuntu/src/oasis-0.2.0/src/oasis/OASISGettext.ml"
+# 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/oasis/OASISGettext.ml"
   
   let ns_ str = 
     str
@@ -24,7 +24,7 @@ module OASISGettext = struct
 end
 
 module OASISExpr = struct
-# 21 "/home/ubuntu/src/oasis-0.2.0/src/oasis/OASISExpr.ml"
+# 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/oasis/OASISExpr.ml"
   
   
   
@@ -115,7 +115,7 @@ end
 
 
 module BaseEnvLight = struct
-# 21 "/home/ubuntu/src/oasis-0.2.0/src/base/BaseEnvLight.ml"
+# 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/base/BaseEnvLight.ml"
   
   module MapString = Map.Make(String)
   
@@ -212,7 +212,7 @@ end
 
 
 module MyOCamlbuildFindlib = struct
-# 21 "/home/ubuntu/src/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildFindlib.ml"
+# 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildFindlib.ml"
   
   (** OCamlbuild extension, copied from 
     * http://brion.inria.fr/gallium/index.php/Using_ocamlfind_with_ocamlbuild
@@ -320,7 +320,7 @@ module MyOCamlbuildFindlib = struct
 end
 
 module MyOCamlbuildBase = struct
-# 21 "/home/ubuntu/src/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
+# 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
   
   (** Base functions for writing myocamlbuild.ml
       @author Sylvain Le Gall
@@ -335,7 +335,7 @@ module MyOCamlbuildBase = struct
   type name = string 
   type tag = string 
   
-# 55 "/home/ubuntu/src/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
+# 55 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/plugins/ocamlbuild/MyOCamlbuildBase.ml"
   
   type t =
       {
@@ -455,11 +455,17 @@ let package_default =
      lib_c = [];
      flags =
        [
-          (["oasis_executable_manager_byte"; "ocaml"; "link"; "byte"],
+          (["oasis_executable_basic_byte"; "ocaml"; "link"; "byte"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_byte"; "ocaml"; "ocamldep"; "byte"],
+          (["oasis_executable_basic_native"; "ocaml"; "link"; "native"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_byte"; "ocaml"; "compile"; "byte"],
+          (["oasis_executable_basic_byte"; "ocaml"; "ocamldep"; "byte"],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          (["oasis_executable_basic_native"; "ocaml"; "ocamldep"; "native"],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          (["oasis_executable_basic_byte"; "ocaml"; "compile"; "byte"],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          (["oasis_executable_basic_native"; "ocaml"; "compile"; "native"],
             [(OASISExpr.EBool true, S [A "-thread"])])
        ];
      }
