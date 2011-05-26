@@ -15,7 +15,7 @@ let rec monitor pid =
   >>= function 
     | _, (Unix.WSTOPPED s) ->
       display "process %d caught signal %d" pid s ; 
-      Ptrace.cont pid s ; monitor pid  
+      Ptrace.cont pid s; monitor pid  
     | _, (Unix.WEXITED s)  ->
       display "process %d has exited with code %d" pid s ;
       fail (ProcessHasExited s)

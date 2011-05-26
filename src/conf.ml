@@ -13,9 +13,9 @@ let _ =
   set_param "targets" "targets.conf" ; 
   set_param "mailing_name" "Instance Controller" ;
   set_param "host" "localhost" ;
-  set_param "mailing_user" Private.gmail_username ; (* <- not in the repository ! *)
+(*  set_param "mailing_user" Private.gmail_username ; (* <- not in the repository ! *)
   set_param "mailing_password" Private.gmail_password ; 
-  set_param "email_admin" "william@corefarm.com"
+*)  set_param "email_admin" "william@corefarm.com"
   
 
 (* Read values from command line ************************************************)
