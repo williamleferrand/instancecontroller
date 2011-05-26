@@ -113,11 +113,10 @@ end
 
 class process_none ?timeout ?env ?stdin ?stdout ?stderr cmd =
   let pid = spawn cmd env ?stdin ?stdout ?stderr [] in
-  let w = Lwt_unix.wait4 [] pid in
-  let close = lazy(w >|= status) in
+  
 object
-  inherit common timeout w pid
-  method close = Lazy.force close
+  inherit common timeout (Obj.magic ()) pid
+  method close = Obj.magic ()
 end
 
 
@@ -131,3 +130,5 @@ end
 
 
 let open_process_none_from_pid ?timeout pid = new process_none_from_pid ?timeout pid
+
+let open_process_none ?timeout ?env ?stdin ?stdout ?stderr cmd = new process_none ?timeout ?env ?stdin ?stdout ?stderr cmd
