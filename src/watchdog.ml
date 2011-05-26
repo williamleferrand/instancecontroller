@@ -25,7 +25,8 @@ let rec monitor pid =
     
 (* Monitor a process ********************************************************************)
 
-let attach pid = 
+let attach target pid = 
+  display "Attaching service with pid %d" pid ;  
   let process = Lwt_process2.open_process_none_from_pid pid in
   display "Process launched with pid %d" (process#pid) ; 
   (try
@@ -50,7 +51,7 @@ let track ((service, process, args) as target) =
   catch 
     (fun () -> 
       Proc.read_pid service
-      >>= attach)
+      >>= attach target)
     (function
       | Proc.NoPid _ -> (* no process, we start a fresh one *) launch target
       | CantAttach _ -> launch target 
