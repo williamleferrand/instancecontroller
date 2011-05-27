@@ -4,11 +4,17 @@ EC2 instance controller
 Rev1 : 05 / 25 / 2011
 
 
-
 Role 1 : 
 
      Run and maintain alive a serie of processes
      The controller should be able to restart without restarting the 'children'
 
 
+Remark: 
+       
+     The controller currently embeds a lot of black magic with processes and ptrace.
+     Signals should be propagated normally but signal 20. Watch out!
 
+
+
+william@corefarm.com
