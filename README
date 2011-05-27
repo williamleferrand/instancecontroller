@@ -10,11 +10,12 @@ Role 1 :
      The controller should be able to restart without restarting the 'children'
 
 
-Remark: 
+Remarks: 
        
      The controller currently embeds a lot of black magic with processes and ptrace.
      Signals should be propagated normally but signal 20. Watch out!
-
+     More important, it is not possible to stop a service for the moment, although it is very simple to implement on top of what we have
+     (for soft service update)
 
 
 william@corefarm.com
