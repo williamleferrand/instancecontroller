@@ -8,6 +8,7 @@ open Misc
 
 exception CantAttach of int
 exception ProcessHasExited of int
+exception DmzCantAttach
 
 (* Monitoring function (track the signals) **********************************************)
     
@@ -20,10 +21,10 @@ let rec monitor_ptrace pid =
       Ptrace.cont pid s; monitor_ptrace pid  
     | _, (Unix.WEXITED s)  ->
       display "process %d has exited with code %d" pid s ;
-      fail (ProcessHasExited s)
+      exit s 
     | _, (Unix.WSIGNALED s) ->
       display "process %d was killed by signal %d" pid s ;
-      fail (ProcessHasExited s)
+      exit s
 
 let monitor_std pid = 
   display "Waiting for data from (std) process %d" pid ; 
@@ -31,6 +32,7 @@ let monitor_std pid =
   >>= function 
     | _, (Unix.WSTOPPED s) ->
       assert false 
+    | _, (Unix.WEXITED 12)  -> fail DmzCantAttach
     | _, (Unix.WEXITED s)  ->
       display "process %d has exited with code %d" pid s ;
       fail (ProcessHasExited s)
@@ -62,7 +64,7 @@ let superspawn (service, process, args) =
          Proc.save_pid_blocking service pid ;
          display "we saved the pid" ; 
          monitor_dmz pid 
-     | pid -> return pid
+     | dmz_pid -> return dmz_pid
        
              
         
@@ -70,12 +72,15 @@ let superspawn (service, process, args) =
 
 let attach target pid = 
   display "Attaching service with pid %d" pid ;  
-  let process = Lwt_process2.open_process_none_from_pid pid in
-  display "Process caught with pid %d" (process#pid) ; 
-  (try
-     Ptrace.attach pid ;
-   with _ -> raise (CantAttach pid)); 
-  monitor_ptrace pid
+  match Unix.fork () with 
+      0 -> 
+        (* DMZ is reparenting the service *)
+        (try
+           Ptrace.attach pid ;
+         with _ -> exit 12) ;
+        monitor_ptrace pid
+    | dmz_pid ->
+      monitor_std dmz_pid 
 
 let launch ((service, process, args) as target) = 
   lwt pid = superspawn target in
@@ -93,6 +98,7 @@ let track ((service, process, args) as target) =
       >>= attach target)
     (function
       | Proc.NoPid _ -> display "There is no pid" ; (* no process, we start a fresh one *) launch target
+      | DmzCantAttach -> display "Error, DMZ can't attach"; launch target
       | CantAttach _ -> display "Error, can't attach"; launch target 
       | _ as e -> fail e)
 
