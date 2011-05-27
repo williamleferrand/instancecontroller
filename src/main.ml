@@ -11,9 +11,9 @@ let _ =
     (
       catch 
         (fun () -> 
-          (if Array.length Sys.argv > 1 then 
+         ((* if Array.length Sys.argv > 1 then 
               Watchdog.attach () (int_of_string Sys.argv.(1))
-           else
+           else *)
               (
               lwt targets = Targets.from_file (Conf.get_param "targets") in         
               Lwt_list.iter_s Watchdog.track targets)))

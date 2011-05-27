@@ -15,10 +15,19 @@ exception DmzCantAttach
 let rec monitor_ptrace pid = 
   display "Waiting for data from process %d" pid ;
   Lwt_unix.waitpid [ Lwt_unix.WUNTRACED ] pid 
-  >>= function 
+  >>= function  
+    | _, (Unix.WSTOPPED (-14)) ->
+      display "child died, time to leave"; 
+      exit 0 
     | _, (Unix.WSTOPPED s) ->
       display "process %d caught signal %d" pid s ; 
-      Ptrace.cont pid s; monitor_ptrace pid  
+      Ptrace.cont pid s ;
+      (* Ptrace.detach pid ; *) 
+      (*
+        Ptrace.detach pid ; 
+        let wait, _ = wait () in 
+        wait >>= fun _ -> *)
+      monitor_ptrace pid  
     | _, (Unix.WEXITED s)  ->
       display "process %d has exited with code %d" pid s ;
       exit s 
@@ -45,7 +54,10 @@ let monitor_dmz pid =
   Lwt_unix.waitpid [] pid 
   >>= function 
     | _, (Unix.WSTOPPED s) -> assert false 
-    | _, (Unix.WEXITED s)  -> exit s
+    | _, (Unix.WEXITED s)  ->
+      display "from dmz : process %d exited with return code %d" pid s ;
+      
+      exit s
     | _, (Unix.WSIGNALED s) ->
       display "process %d was killed by signal %d" pid s ;
       exit s 
@@ -61,8 +73,6 @@ let superspawn (service, process, args) =
          let handle = Lwt_process.open_process_none (process, (Array.of_list args)) in 
          let pid = handle#pid in
          display "service %s spawned from dmz with pid %d" service pid ;
-         Proc.save_pid_blocking service pid ;
-         display "we saved the pid" ; 
          monitor_dmz pid 
      | dmz_pid -> return dmz_pid
        
@@ -70,7 +80,7 @@ let superspawn (service, process, args) =
         
 (* Monitor a process ********************************************************************)
 
-let attach target pid = 
+let attach ((service, process, args) as target) pid = 
   display "Attaching service with pid %d" pid ;  
   match Unix.fork () with 
       0 -> 
@@ -80,11 +90,14 @@ let attach target pid =
          with _ -> exit 12) ;
         monitor_ptrace pid
     | dmz_pid ->
+      Proc.save_pid_blocking service dmz_pid ;
       monitor_std dmz_pid 
 
 let launch ((service, process, args) as target) = 
   lwt pid = superspawn target in
   display "Process %s launched with pid %d (it's the pid of the dmz)" process pid;
+  Proc.save_pid_blocking service pid ;
+  display "we saved the pid" ;      
   monitor_std pid 
 
 
