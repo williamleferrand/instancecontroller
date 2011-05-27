@@ -16,7 +16,7 @@ let _ =
            else *)
               (
               lwt targets = Targets.from_file (Conf.get_param "targets") in         
-              Lwt_list.iter_s Watchdog.track targets)))
+              Lwt_list.iter_s (Watchdog.track (Conf.get_param_int "max_retry")) targets)))
         (fun e -> 
 (*          Report.panic (Printf.sprintf "Panic: exception %s raised, exiting now" (Printexc.to_string e)) ; *)
           display "Panic: exception %s raised, exiting now" (Printexc.to_string e);  return ()
