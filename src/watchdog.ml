@@ -59,7 +59,7 @@ let superspawn (service, process, args) =
          let handle = Lwt_process.open_process_none (process, (Array.of_list args)) in 
          let pid = handle#pid in
          display "service %s spawned from dmz with pid %d" service pid ;
-         
+         Proc.save_pid_blocking service pid ;
          display "we saved the pid" ; 
          monitor_dmz pid 
      | pid -> return pid

@@ -19,3 +19,4 @@ setup.ml
 *.conf
 *private.ml
 bare
+*pid

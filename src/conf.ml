@@ -17,7 +17,7 @@ let _ =
   set_param "mailing_password" Private.gmail_password ; 
 *)  
   set_param "email_admin" "william@corefarm.com" ; 
-  set_param "pid_dir" "/Users/hypios/" 
+  set_param "pid_dir" "" 
 
 
 (* Read values from command line ************************************************)
