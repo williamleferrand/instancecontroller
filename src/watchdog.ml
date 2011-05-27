@@ -40,10 +40,9 @@ let monitor_std pid =
 
 let monitor_dmz pid = 
   display "Waiting for data from (dmz) process %d" pid ; 
-   Lwt_unix.waitpid [] pid 
+  Lwt_unix.waitpid [] pid 
   >>= function 
-    | _, (Unix.WSTOPPED s) ->
-      assert false 
+    | _, (Unix.WSTOPPED s) -> assert false 
     | _, (Unix.WEXITED s)  -> exit s
     | _, (Unix.WSIGNALED s) ->
       display "process %d was killed by signal %d" pid s ;
@@ -59,8 +58,9 @@ let superspawn (service, process, args) =
        0 ->  
          let handle = Lwt_process.open_process_none (process, (Array.of_list args)) in 
          let pid = handle#pid in
-         Proc.save_pid service pid
-         >>= fun _ -> 
+         display "service %s spawned from dmz with pid %d" service pid ;
+         
+         display "we saved the pid" ; 
          monitor_dmz pid 
      | pid -> return pid
        
