@@ -18,7 +18,7 @@ let rec monitor_ptrace pid =
   >>= function  
     | _, (Unix.WSTOPPED (-14)) ->
       display "child died, time to leave"; 
-      exit 0 
+      exit (1)
     | _, (Unix.WSTOPPED s) ->
       display "process %d caught signal %d" pid s ; 
       Ptrace.cont pid s ;
