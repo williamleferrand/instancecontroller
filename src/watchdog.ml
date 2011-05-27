@@ -123,6 +123,6 @@ let rec track retries ((service, process, args) as target) =
             | Proc.NoPid _ -> display "There is no pid" ; (* no process, we start a fresh one *) launch target
             | DmzCantAttach -> display "Error, DMZ can't attach"; launch target
             | CantAttach _ -> display "Error, can't attach"; launch target 
-            | _ as e -> fail e))
+            | _ as e -> fail e)) 
       (fun e -> track (retries - 1) target)
 
