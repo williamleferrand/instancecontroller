@@ -10,7 +10,7 @@ exception CantAttach of int
 exception ProcessHasExited of int
 
 (* Monitoring function (track the signals) **********************************************)
-
+    
 let rec monitor_ptrace pid = 
   display "Waiting for data from process %d" pid ;
   Lwt_unix.waitpid [ Lwt_unix.WUNTRACED ] pid 
@@ -37,7 +37,35 @@ let monitor_std pid =
     | _, (Unix.WSIGNALED s) ->
       display "process %d was killed by signal %d" pid s ;
       fail (ProcessHasExited s)
-    
+
+let monitor_dmz pid = 
+  display "Waiting for data from (dmz) process %d" pid ; 
+   Lwt_unix.waitpid [] pid 
+  >>= function 
+    | _, (Unix.WSTOPPED s) ->
+      assert false 
+    | _, (Unix.WEXITED s)  -> exit s
+    | _, (Unix.WSIGNALED s) ->
+      display "process %d was killed by signal %d" pid s ;
+      exit s 
+
+
+(* Super spawner *)
+(* This superspawner create an intermediate process to avoid the final service to become
+   an orphan *)
+
+let superspawn (service, process, args) = 
+   match Unix.fork () with 
+       0 ->  
+         let handle = Lwt_process.open_process_none (process, (Array.of_list args)) in 
+         let pid = handle#pid in
+         Proc.save_pid service pid
+         >>= fun _ -> 
+         monitor_dmz pid 
+     | pid -> return pid
+       
+             
+        
 (* Monitor a process ********************************************************************)
 
 let attach target pid = 
@@ -49,12 +77,9 @@ let attach target pid =
    with _ -> raise (CantAttach pid)); 
   monitor_ptrace pid
 
-let launch (service, process, args) = 
-  let handle = Lwt_process.open_process_none (process, (Array.of_list args)) in 
-  let pid = handle#pid in
-  display "Process %s launched with pid %d" process pid;
-  Proc.save_pid service pid 
-  >>= fun _ -> 
+let launch ((service, process, args) as target) = 
+  lwt pid = superspawn target in
+  display "Process %s launched with pid %d (it's the pid of the dmz)" process pid;
   monitor_std pid 
 
 

@@ -40,12 +40,17 @@ int main(int argc, char** argv) {
       if (WIFSTOPPED(status)) {
         // Child is stoppped
         printf ("STOPPED: %d\n", WSTOPSIG(status)); 
-        if (ptrace(PT_CONTINUE, pid, 1, WSTOPSIG(status))) {
+        
+
+        if (ptrace(PT_STEP, pid, 1, WSTOPSIG(status))) {
           printf ("PANIC, can't CONTINUE\n"); 
           return 1; 
-        }
+          } 
+
+        // rc = ptrace(PT_DETACH, pid, 0, 0); 
+        //printf ("RC: %d\n", rc) ;
+        //return 0 ;
         
-        rc = ptrace(PT_DETACH, pid, NULL, 0); 
         
         continue; 
 
