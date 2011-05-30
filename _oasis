@@ -16,7 +16,7 @@ Executable hidden_signal
   ByteOpt: -thread
   NativeOpt: -thread
   CompiledObject: best
-  BuildDepends: ptrace, lwt, lwt.extra, lwt.unix, lwt.syntax, str, ssl, netstring, ulex
+  BuildDepends: ptrace, lwt, lwt.extra, lwt.unix, str, ssl, netstring, ulex
 
 Executable broken_process
   Path:         experiments
@@ -27,12 +27,12 @@ Executable broken_process
   CompiledObject: best
         
 
-#Executable basic
-#  Path:         src
-#  MainIs:       basic.ml
-#  Install:      false
-#  ByteOpt: -thread
-#  NativeOpt: -thread
-#  CompiledObject: best
-#  BuildDepends: ptrace
+Executable basic
+  Path:         src
+  MainIs:       basic.ml
+  Install:      false
+  ByteOpt: -thread
+  NativeOpt: -thread
+  CompiledObject: best
+  BuildDepends: ptrace
           

@@ -130,8 +130,7 @@ let rec track retries ((service, process, args) as target) =
 
 let _ = 
   display ">>> Instance manager <<<" ; 
-  let p = "/Users/hypios/reloaded/dev/issuu/backend-piper/ocaml/_build/src/ad_serving/service.native" in 
-  track 3 ("test", 
-           p, 
-           [| p |])
+  let p = "_build/experiments/broken_process.native" in
+
+  track 3 ("test",  p, [| p |])
     
