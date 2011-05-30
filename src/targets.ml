@@ -35,6 +35,7 @@ and read_until_qmark gacc acc =
 
 (* Apply the Ulex runtime *********************************************************************)
 
+(* 
 let from_file file =
   catch 
     (fun () -> 
@@ -43,7 +44,7 @@ let from_file file =
       (try 
          while true do 
            let line = input_line ic in
-           
+          
       with End_of_file -> ()); 
           
           while 
@@ -62,3 +63,25 @@ let from_file file =
      >>= fun l -> Lwt_io.close ic 
      >>= fun _ -> return l)
     (fun _ -> fail (CantReadTargetsFile file))
+*)
+
+(* the straight way *)
+
+let from_file file = 
+  try 
+    let ic = open_in file in 
+    let targets = ref [] in 
+    (try 
+       while true do 
+         let line = input_line ic in
+         match parse_command_line [] "" (Ulexing.from_utf8_string line) with 
+             service :: (binary :: args as l) -> 
+               display "Service %s, binary is %s, arguments are [%s]" service  binary (String.concat "|" args); 
+               targets := (service, binary, (Array.of_list l)) :: !targets 
+           | _ -> () 
+       done ;
+       assert false
+             
+ with End_of_file -> ()); 
+    !targets
+  with _ -> raise  (CantReadTargetsFile file)

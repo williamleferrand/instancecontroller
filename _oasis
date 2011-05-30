@@ -26,7 +26,6 @@ Executable broken_process
   NativeOpt: -thread
   CompiledObject: best
         
-
 Executable basic
   Path:         src
   MainIs:       basic.ml
@@ -35,4 +34,13 @@ Executable basic
   NativeOpt: -thread
   CompiledObject: best
   BuildDepends: ptrace
+
+Executable controller
+  Path:         src
+  MainIs:       main.ml
+  Install:      false
+  ByteOpt: -thread
+  NativeOpt: -thread
+  CompiledObject: best
+  BuildDepends: ptrace, ulex
           
