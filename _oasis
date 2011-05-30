@@ -9,15 +9,23 @@ Plugins: DevFiles (0.2), META (0.2)
 Synopsis: InstanceManager
 
 
-Executable manager
-  Path:         src
-  MainIs:       main.ml
+Executable hidden_signal
+  Path:         experiments
+  MainIs:       hidden_signal.ml
   Install:      false
   ByteOpt: -thread
   NativeOpt: -thread
   CompiledObject: best
   BuildDepends: ptrace, lwt, lwt.extra, lwt.unix, lwt.syntax, str, ssl, netstring, ulex
 
+Executable broken_process
+  Path:         experiments
+  MainIs:       broken_process.ml
+  Install:      false
+  ByteOpt: -thread
+  NativeOpt: -thread
+  CompiledObject: best
+        
 
 #Executable basic
 #  Path:         src
@@ -27,5 +35,4 @@ Executable manager
 #  NativeOpt: -thread
 #  CompiledObject: best
 #  BuildDepends: ptrace
-
           

@@ -1,6 +1,5 @@
 (* read the names of the services to launch *)
 
-open Lwt
 open Misc
 
 exception CantReadTargetsFile of string
@@ -16,7 +15,8 @@ let rec parse_command_line gacc acc =
   lexer 
   |  '\'' -> read_until_apostrophe gacc acc lexbuf 
   |  '\"' -> read_until_qmark gacc acc lexbuf 
-  | [ '\t' ' ']+ -> display "reading space with acc: %s" acc; parse_command_line (append gacc acc) "" lexbuf
+  |  '#' -> []
+  | [ '\t' ' ']+ -> parse_command_line (append gacc acc) "" lexbuf
   | eof -> List.rev (append gacc acc)
   | _ -> parse_command_line gacc (acc ^ (Ulexing.utf8_lexeme lexbuf)) lexbuf
 
@@ -38,11 +38,20 @@ and read_until_qmark gacc acc =
 let from_file file =
   catch 
     (fun () -> 
+      let ic = open_in file in 
+      let targets = ref [] in 
+      (try 
+         while true do 
+           let line = input_line ic in
+           
+      with End_of_file -> ()); 
+          
+          while 
      lwt ic = Lwt_io.open_file ~mode:Lwt_io.input file in
      let lines = Lwt_io.read_lines ic in
      Lwt_stream.fold 
        (fun binary acc ->
-         display "Parsing %s" binary ;
+        
          match parse_command_line [] "" (Ulexing.from_utf8_string binary) with 
              service :: (binary :: args as l) -> 
                display "Service %s, binary is %s, arguments are [%s]" service  binary (String.concat "|" args); 

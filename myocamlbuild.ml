@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 82af4e8d2dfb7fdb28dc5af01c8ce32c) *)
+(* DO NOT EDIT (digest: caec7780b3ebcfb21219fc2c55494a93) *)
 module OASISGettext = struct
 # 21 "/Users/hypios/reloaded/pub/oasis-0.2.0/src/oasis/OASISGettext.ml"
   
@@ -455,17 +455,75 @@ let package_default =
      lib_c = [];
      flags =
        [
-          (["oasis_executable_manager_byte"; "ocaml"; "link"; "byte"],
+          (["oasis_executable_broken_process_byte"; "ocaml"; "link"; "byte"],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_native"; "ocaml"; "link"; "native"],
+          ([
+              "oasis_executable_broken_process_native";
+              "ocaml";
+              "link";
+              "native"
+           ],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_byte"; "ocaml"; "ocamldep"; "byte"],
+          ([
+              "oasis_executable_broken_process_byte";
+              "ocaml";
+              "ocamldep";
+              "byte"
+           ],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_native"; "ocaml"; "ocamldep"; "native"],
+          ([
+              "oasis_executable_broken_process_native";
+              "ocaml";
+              "ocamldep";
+              "native"
+           ],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_byte"; "ocaml"; "compile"; "byte"],
+          ([
+              "oasis_executable_broken_process_byte";
+              "ocaml";
+              "compile";
+              "byte"
+           ],
             [(OASISExpr.EBool true, S [A "-thread"])]);
-          (["oasis_executable_manager_native"; "ocaml"; "compile"; "native"],
+          ([
+              "oasis_executable_broken_process_native";
+              "ocaml";
+              "compile";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          (["oasis_executable_hidden_signal_byte"; "ocaml"; "link"; "byte"],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          ([
+              "oasis_executable_hidden_signal_native";
+              "ocaml";
+              "link";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          ([
+              "oasis_executable_hidden_signal_byte";
+              "ocaml";
+              "ocamldep";
+              "byte"
+           ],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          ([
+              "oasis_executable_hidden_signal_native";
+              "ocaml";
+              "ocamldep";
+              "native"
+           ],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          (["oasis_executable_hidden_signal_byte"; "ocaml"; "compile"; "byte"
+           ],
+            [(OASISExpr.EBool true, S [A "-thread"])]);
+          ([
+              "oasis_executable_hidden_signal_native";
+              "ocaml";
+              "compile";
+              "native"
+           ],
             [(OASISExpr.EBool true, S [A "-thread"])])
        ];
      }
